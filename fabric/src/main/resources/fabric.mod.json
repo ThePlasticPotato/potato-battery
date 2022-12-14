@@ -16,7 +16,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.examplemod.fabric.ExampleModFabric"
+      "me.crackhead.potato_battery.fabric.PotatoBatteryModFabric"
     ]
   },
   "mixins": [
