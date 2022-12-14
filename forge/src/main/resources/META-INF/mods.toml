@@ -4,30 +4,30 @@ loaderVersion = "[40,)"
 license = "Insert License Here"
 
 [[mods]]
-modId = "examplemod"
+modId = "potato_battery"
 version = "${version}"
-displayName = "Example Mod"
+displayName = "Potato Battery"
 authors = "Me!"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+An indepth electricity API for Minecraft. Modloader independent.
 '''
 #logoFile = ""
 
-[[dependencies.examplemod]]
+[[dependencies.potato_battery]]
 modId = "forge"
 mandatory = true
 versionRange = "[40,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.potato_battery]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.18.2,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.potato_battery]]
 modId = "architectury"
 mandatory = true
 versionRange = "[4.9.83,)"

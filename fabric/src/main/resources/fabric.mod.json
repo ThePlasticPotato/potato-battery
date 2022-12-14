@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "potato_battery",
   "version": "${version}",
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Potato Battery",
+  "description": "An indepth electricity API for Minecraft. Modloader independent.",
   "authors": [
     "Me!"
   ],
@@ -20,8 +20,8 @@
     ]
   },
   "mixins": [
-    "examplemod.mixins.json",
-    "examplemod-common.mixins.json"
+    "potato_battery.mixins.json",
+    "potato_battery-common.mixins.json"
   ],
   "depends": {
     "fabric": "*",
