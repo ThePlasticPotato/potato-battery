@@ -1,6 +1,5 @@
 # potato-battery
-An indepth electricity API for Minecraft. Modloader independent.
-Potato Battery
+
 The Potato Battery mod is intended to provide a fun and more interesting take on power in Minecraft without overcomplicating it to the point where you need a physics degree in order to understand it. It’s built with the Architectury api, and written mostly in Kotlin. This allows it to be loader independent. The system is intended to be easily expanded upon and integrated with, while also allowing for straightforward conversion to a more typical system such as FE or RF.
 
 ## Requirements for new additions:
