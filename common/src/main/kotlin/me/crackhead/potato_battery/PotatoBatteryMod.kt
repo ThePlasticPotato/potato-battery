@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder.literal
 import me.crackhead.potato_battery.sim.PBVertex
 import me.crackhead.potato_battery.sim.Visualizer
 import net.minecraft.client.multiplayer.ClientSuggestionProvider
+import net.minecraft.resources.ResourceLocation
 import org.jgrapht.graph.DefaultEdge
 import org.jgrapht.graph.DefaultListenableGraph
 import org.jgrapht.graph.SimpleGraph
@@ -47,5 +48,9 @@ object PotatoBatteryMod {
                     })
             )
         }
+    }
+
+    fun asResource(path: String?): ResourceLocation? {
+        return ResourceLocation(MOD_ID, path)
     }
 }
