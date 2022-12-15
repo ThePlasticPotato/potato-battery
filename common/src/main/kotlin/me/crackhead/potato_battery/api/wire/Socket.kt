@@ -16,7 +16,7 @@ class Socket(override val pos: Vec3, override val color: DyeColor) : ISocket {
         this._connectedSocket = other
     }
 
-    override fun disconnnect() {
+    override fun disconnect() {
         this._connectedSocket = null
     }
 }

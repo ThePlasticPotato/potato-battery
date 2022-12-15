@@ -14,5 +14,5 @@ interface ISocket {
     val color: DyeColor
 
     fun connect(other: Socket)
-    fun disconnnect()
+    fun disconnect()
 }
