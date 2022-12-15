@@ -7,26 +7,15 @@ import kotlin.math.roundToInt
 
 class Socket() : Comparable<Socket>, ISocket {
 
-    override var isOccupied: Boolean = false
     override var connectedSocket: Socket? = null
-    override var posX: Vec3
-        get() = posX
-        set(x: Vec3) {
-            posX = x
-        }
-    override var posY: Vec3
-        get() = posY
-        set(y: Vec3) {
-            posY = y
-        }
-    override var posZ: Vec3
-        get() = posZ
-        set(z: Vec3) {
-            posZ = z
+    override var pos: Vec3
+        get() = pos
+        set(position: Vec3) {
+            pos = position
         }
 
     fun Socket() {
-        if (isOccupied && connectedSocket != null) {
+        if (connectedSocket != null) {
             //insert energy transfer code here :clueless:
         } else {
             //insert connection code here :troll:
@@ -34,30 +23,24 @@ class Socket() : Comparable<Socket>, ISocket {
     }
 
     override fun compareTo(other: Socket): Int {
-        val loc = Vec3(this.posX.x, this.posY.y, this.posZ.z)
-        val otherloc = Vec3(other.posX.x, other.posY.y, other.posZ.z)
+        val loc = this.pos
+        val otherloc = other.pos
         val distance: Double = loc.distanceToSqr(otherloc)
         return distance.roundToInt()
     }
 
     override fun connect(other: Socket) {
         this.connectedSocket = other
-        this.isOccupied = true
     }
 
     override fun disconnnect() {
         this.connectedSocket = null
-        this.isOccupied = false
     }
 
-    override var polarityPos: Boolean
-        get() = polarityPos
+    override var polarity: Boolean
+        get() = polarity
         set(positive: Boolean) {
-            polarityPos = positive
+            polarity = positive
         }
-    override var isDC: Boolean
-        get() = isDC
-        set(dc: Boolean) {
-            isDC = dc
-        }
+    
 }
