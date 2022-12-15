@@ -1,22 +1,18 @@
 package me.crackhead.potato_battery.api.wire
 
-import com.mojang.math.Vector3d
 import net.minecraft.world.item.DyeColor
 import net.minecraft.world.phys.Vec3
-import kotlin.math.roundToInt
 
+interface Socket {
 
-class Socket(override val pos: Vec3, override val color: DyeColor) : ISocket {
+    val connectedSocket: DefaultSocket?
 
-    private var _connectedSocket: Socket? = null
-    override val connectedSocket: Socket? get() = _connectedSocket
+    /**
+     * The position of the socket relative from the middle of the block
+     */
+    val pos: Vec3
+    val color: DyeColor
 
-
-    override fun connect(other: Socket) {
-        this._connectedSocket = other
-    }
-
-    override fun disconnect() {
-        this._connectedSocket = null
-    }
+    fun connect(other: DefaultSocket)
+    fun disconnect()
 }
