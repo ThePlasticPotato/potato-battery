@@ -14,51 +14,58 @@ import org.jacop.search.SelectChoicePoint
 import org.jacop.search.SimpleSolutionListener
 import org.jgrapht.graph.DefaultDirectedGraph
 import org.jgrapht.graph.DirectedMultigraph
+import org.jgrapht.graph.builder.GraphBuilder
 import java.util.function.Supplier
 
 fun main() {
-    var start: SolverValue? = null
-    var end: SolverValue? = null
 
-    val mySource = object : VoltageSource(12.0) {
+    var voltage = 4000.0
+    val mySource = object : BiComponent() {
         override fun constrain(model: Model, current: SolverValue, voltage1: SolverValue, voltage2: SolverValue) {
-            super.constrain(model, current, voltage1, voltage2)
-            start = voltage1
-            end = voltage2
+            VoltageSource(voltage).constrain(model, current, voltage1, voltage2)
         }
+
+        override fun needsReconstruction(): Boolean = true
     }
 
     val graph = DirectedMultigraph<PBVertex, BiComponent>(BiComponent::class.java)
     var counter = 0
     graph.vertexSupplier = Supplier { PBVertex(counter++, null) }
 
+    var point = graph.addVertex()
     run {
         val s1 = graph.addVertex()
         val s2 = graph.addVertex()
         graph.addEdge(s1, s2, mySource)
-        val s3 = PBVertex(counter++, "divide"); graph.addVertex(s3)
-        graph.addEdge(s1, s3, Resistor(220.0))
-        graph.addEdge(s3, s2, Resistor(220.0))
-        graph.addEdge(s3, s2, Diode())
+
+        var prev = s1
+        repeat(10000) {
+            val new = if (it == 5000) point else graph.addVertex()
+            graph.addEdge(prev, new, Diode())
+            prev = new
+        }
+
+        graph.addEdge(prev, s2, Resistor(1000.0))
     }
 
-    val (model, vars) = Graph2Model.buildModel(graph)
+    val model = Graph2Model.buildModel(graph) as ModelImpl
 
-    val label = DepthFirstSearch<FloatVar>()
-    val s = SplitSelectFloat(model.store, vars, SmallestDomainFloat())
-    label.setSolutionListener(object : SimpleSolutionListener<FloatVar>() {
-        override fun executeAfterSolution(search: Search<FloatVar>, select: SelectChoicePoint<FloatVar>): Boolean {
-            val parent = super.executeAfterSolution(search, select)
 
-            select.variablesMapping.forEach { (k, v) ->
-                println("${k.id()} = ${k.value()}")
-            }
+    var startTime = System.nanoTime()
+    val label1 = DepthFirstSearch<FloatVar>()
+    model.rebuildNeeded()
+    val s = SplitSelectFloat(model, arrayOf(model.vertexToValue[point]), SmallestDomainFloat())
+    model.solve()
+    label1.labeling(model, s)
+    println("First Run: Took ${System.nanoTime() - startTime}ns")
 
-            return parent
-        }
-    })
-    label.getSolutionListener().recordSolutions(true)
-    label.getSolutionListener().searchAll(true)
-    label.setAssignSolution(true)
-    label.labeling(model.store, s)
+    voltage *= 2.0
+
+    startTime = System.nanoTime()
+    val label2 = DepthFirstSearch<FloatVar>()
+    model.rebuildNeeded()
+    val s2 = SplitSelectFloat(model, arrayOf(model.vertexToValue[point]), SmallestDomainFloat())
+    model.solve()
+    label2.labeling(model, s2)
+    println("Second Run: Took ${System.nanoTime() - startTime}ns")
 }

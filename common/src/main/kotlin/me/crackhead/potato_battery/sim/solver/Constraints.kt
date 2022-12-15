@@ -100,7 +100,7 @@ data class EqualsConstraint(val left: Constraint, val right: Constraint): BiCons
             is ConstantConstraint ->  when (left.left) {
                 is DynamicConstraint -> when (left.right) {
                     is DynamicConstraint ->
-                        PplusQeqR(left.left.value, left.right.value, builder.wrap(right.constant))
+                        PplusQeqR(left.left.value, left.right.value, builder.model.wrap(right.constant))
                     else -> throw UnsupportedOperationException()
                 }
                 else -> throw UnsupportedOperationException()
@@ -124,7 +124,7 @@ data class EqualsConstraint(val left: Constraint, val right: Constraint): BiCons
             is ConstantConstraint ->  when (left.left) {
                 is DynamicConstraint -> when (left.right) {
                     is DynamicConstraint ->
-                        PminusQeqR(left.left.value, left.right.value, builder.wrap(right.constant))
+                        PminusQeqR(left.left.value, left.right.value, builder.model.wrap(right.constant))
                     else -> throw UnsupportedOperationException()
                 }
                 else -> throw UnsupportedOperationException()
@@ -148,7 +148,7 @@ data class EqualsConstraint(val left: Constraint, val right: Constraint): BiCons
             is ConstantConstraint ->  when (left.left) {
                 is DynamicConstraint -> when (left.right) {
                     is DynamicConstraint ->
-                        PmulQeqR(left.left.value, left.right.value, builder.wrap(right.constant))
+                        PmulQeqR(left.left.value, left.right.value, builder.model.wrap(right.constant))
                     else -> throw UnsupportedOperationException()
                 }
                 else -> throw UnsupportedOperationException()
@@ -169,7 +169,7 @@ data class EqualsConstraint(val left: Constraint, val right: Constraint): BiCons
         }
 
         is SumConstraint -> when (right) {
-            is ConstantConstraint -> SumFloat(left.list.toTypedArray(), "==", builder.wrap(right.constant))
+            is ConstantConstraint -> SumFloat(left.list.toTypedArray(), "==", builder.model.wrap(right.constant))
             is DynamicConstraint -> SumFloat(left.list.toTypedArray(), "==", right.value)
             else -> throw UnsupportedOperationException()
         }
@@ -232,13 +232,4 @@ class ConstrainBuilder(val model: Model) {
 
     infix fun SolverValue.lte(other: Double): Constraint =
         LesserThenEqualConstraint(DynamicConstraint(this), ConstantConstraint(other))
-
-
-    internal fun makeTMP(function: (SolverValue) -> org.jacop.constraints.Constraint): SolverValue {
-        val value = model.getUniqueValue()
-        model.store.impose(function(value))
-        return value
-    }
-
-    internal fun wrap(value: Double): SolverValue =  model.wrap(value)
 }

@@ -9,30 +9,27 @@ import org.jgrapht.graph.SimpleGraph
 
 object Graph2Model {
 
-    fun buildModel(graph: DirectedMultigraph<PBVertex, BiComponent>): Pair<Model, Array<SolverValue>> {
-        val model = Model()
-
-        val vertexToValue = HashMap<PBVertex, SolverValue>()
-        val edgeToCurrent = HashMap<BiComponent, SolverValue>()
+    fun buildModel(graph: DirectedMultigraph<PBVertex, BiComponent>): Model {
+        val model = ModelImpl()
 
         graph.edgeSet().forEach {
             val v1 = graph.getEdgeSource(it)
             val v2 = graph.getEdgeTarget(it)
 
-            val v1Value = vertexToValue.getOrPut(v1) { model.getUniqueValue(v1.name) }
-            val v2Value = vertexToValue.getOrPut(v2) { model.getUniqueValue(v2.name) }
+            val v1Value = model.vertexToValue.getOrPut(v1) { model.getUniqueValue(v1.name) }
+            val v2Value = model.vertexToValue.getOrPut(v2) { model.getUniqueValue(v2.name) }
 
             val current = model.getUniqueValue()
-            edgeToCurrent[it] = current
 
-            it.constrain(model, current, v1Value, v2Value)
+            val tmpModel = ConstraintSetBuilder(model)
+            it.constrain(tmpModel, current, v1Value, v2Value)
+
+            model.edgeToCurrent[it] = current to tmpModel.constraints
         }
 
         graph.vertexSet().forEach {
-            val value = vertexToValue[it] ?: return@forEach
-
             model.constrain { sum(graph.edgesOf(it).mapNotNull {  edge ->
-                val current = edgeToCurrent[edge] ?: return@mapNotNull null
+                val (current, _) = model.edgeToCurrent[edge] ?: return@mapNotNull null
 
                 if (graph.getEdgeSource(edge) == it)
                     current
@@ -41,11 +38,7 @@ object Graph2Model {
             }) eq 0.0 }
         }
 
-
-
-        val vars = vertexToValue.values.asSequence().plus(edgeToCurrent.values.asSequence()).toList().toTypedArray()
-
-        return model to vars
+        return model
     }
 
 }
