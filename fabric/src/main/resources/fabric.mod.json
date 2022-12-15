@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "potato_battery",
+  "id": "pb",
   "version": "${version}",
   "name": "Potato Battery",
   "description": "An indepth electricity API for Minecraft. Modloader independent.",
@@ -12,11 +12,14 @@
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
   "license": "Insert License Here",
-  "icon": "assets/examplemod/icon.png",
+  "icon": "assets/pb/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
       "me.crackhead.potato_battery.fabric.PotatoBatteryModFabric"
+    ],
+    "client": [
+        "me.crackhead.potato_battery.fabric.PotatoBatteryModFabric${'$'}Client"
     ]
   },
   "mixins": [
@@ -25,7 +28,6 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.18.2",
-    "architectury": ">=4.9.83"
+    "minecraft": ">=1.18.2"
   }
 }
