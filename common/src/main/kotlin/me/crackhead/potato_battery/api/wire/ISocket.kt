@@ -1,16 +1,18 @@
 package me.crackhead.potato_battery.api.wire
 
+import net.minecraft.world.item.DyeColor
 import net.minecraft.world.phys.Vec3
 
 interface ISocket {
 
-    var connectedSocket: Socket?
+    val connectedSocket: Socket?
 
-    var pos: Vec3
+    /**
+     * The position of the socket relative from the middle of the block
+     */
+    val pos: Vec3
+    val color: DyeColor
 
     fun connect(other: Socket)
-
     fun disconnnect()
-
-    var polarity: Boolean
 }
