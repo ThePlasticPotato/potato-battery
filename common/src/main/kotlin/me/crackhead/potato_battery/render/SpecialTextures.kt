@@ -21,4 +21,5 @@ enum class SpecialTextures(filename: String) {
     fun bind() {
         RenderSystem.setShaderTexture(0, location)
     }
+
 }

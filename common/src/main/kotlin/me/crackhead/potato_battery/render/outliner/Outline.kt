@@ -1,18 +1,12 @@
-package me.crackhead.potato_battery.render
+package me.crackhead.potato_battery.render.outliner
 
-//import com.jozufozu.flywheel.util.transform.TransformStack
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.math.Matrix3f
+import me.crackhead.potato_battery.render.RenderTypes
 import me.crackhead.potato_battery.render.util.AngleHelper
 import me.crackhead.potato_battery.render.util.Color
 import me.crackhead.potato_battery.render.util.VecHelper
-//import com.simibubi.create.SpecialTextures
-//import com.simibubi.create.foundation.render.RenderTypes
-//import com.simibubi.create.foundation.render.SuperRenderTypeBuffer
-//import com.simibubi.create.foundation.utility.AngleHelper
-//import com.simibubi.create.foundation.utility.Color
-//import com.simibubi.create.foundation.utility.VecHelper
 import net.minecraft.client.renderer.LightTexture
 import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.core.Direction
@@ -20,6 +14,7 @@ import net.minecraft.util.Mth
 import net.minecraft.world.phys.Vec3
 import java.util.*
 import me.crackhead.potato_battery.render.SpecialTextures
+import me.crackhead.potato_battery.render.SuperRenderTypeBuffer
 import me.crackhead.potato_battery.render.util.TransformStack
 import net.minecraft.client.renderer.RenderType
 
@@ -27,15 +22,15 @@ import net.minecraft.client.renderer.RenderType
 abstract class Outline {
     var params: OutlineParams
         protected set
-    protected var transformNormals // TODO: not used?
+    protected var transformNormals
             : Matrix3f? = null
 
     init {
         params = OutlineParams()
     }
 
-    abstract fun render(ms: PoseStack?, buffer: SuperRenderTypeBuffer?, pt: Float)
-    fun tick() {}
+    abstract fun render(ms: PoseStack, buffer: SuperRenderTypeBuffer, pt: Float)
+    open fun tick() {}
     fun renderCuboidLine(ms: PoseStack, buffer: SuperRenderTypeBuffer, start: Vec3?, end: Vec3) {
         val diff = end.subtract(start)
         val hAngle: Float = AngleHelper.deg(Mth.atan2(diff.x, diff.z))
@@ -57,7 +52,7 @@ abstract class Outline {
         var end = end
         val lineWidth = params.getLineWidth()
         if (lineWidth == 0f) return
-        val builder: VertexConsumer = buffer.getBuffer(RenderType.LINES) //replace with custom render type later
+        val builder: VertexConsumer = buffer.getBuffer(RenderTypes.outlineSolid) //replace with custom render type later
         var diff = end.subtract(start)
         if (diff.x + diff.y + diff.z < 0) {
             val temp = start
@@ -167,12 +162,12 @@ abstract class Outline {
     }
 
     class OutlineParams {
-        protected var faceTexture: Optional<SpecialTextures>
-        protected var hightlightedFaceTexture: Optional<SpecialTextures>
+        var faceTexture: Optional<SpecialTextures>
+        var hightlightedFaceTexture: Optional<SpecialTextures>
         var highlightedFace: Direction? = null
             protected set
         protected var fadeLineWidth: Boolean
-        protected var disableCull = false
+        var disableCull = false
         var disableNormals = false
         var alpha: Float
         var lightMap: Int
