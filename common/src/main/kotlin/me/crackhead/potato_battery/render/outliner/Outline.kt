@@ -4,12 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.math.Matrix3f
 import me.crackhead.potato_battery.render.SpecialTextures
-import me.crackhead.potato_battery.render.SuperRenderTypeBuffer
 import me.crackhead.potato_battery.render.util.AngleHelper
 import me.crackhead.potato_battery.render.util.Color
 import me.crackhead.potato_battery.render.util.TransformStack
 import me.crackhead.potato_battery.render.util.VecHelper
 import net.minecraft.client.renderer.LightTexture
+import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.core.Direction
@@ -28,9 +28,9 @@ abstract class Outline {
         params = OutlineParams()
     }
 
-    abstract fun render(ms: PoseStack, buffer: SuperRenderTypeBuffer, pt: Float)
+    abstract fun render(ms: PoseStack, buffer: MultiBufferSource, pt: Float)
     open fun tick() {}
-    fun renderCuboidLine(ms: PoseStack, buffer: SuperRenderTypeBuffer, start: Vec3?, end: Vec3) {
+    fun renderCuboidLine(ms: PoseStack, buffer: MultiBufferSource, start: Vec3?, end: Vec3) {
         val diff = end.subtract(start)
         val hAngle: Float = AngleHelper.deg(Mth.atan2(diff.x, diff.z))
         val hDistance = diff.multiply(1.0, 0.0, 1.0)
@@ -46,7 +46,7 @@ abstract class Outline {
         ms.popPose()
     }
 
-    fun renderAACuboidLine(ms: PoseStack, buffer: SuperRenderTypeBuffer, start: Vec3, end: Vec3) {
+    fun renderAACuboidLine(ms: PoseStack, buffer: MultiBufferSource, start: Vec3, end: Vec3) {
         var start = start
         var end = end
         val lineWidth = params.getLineWidth()

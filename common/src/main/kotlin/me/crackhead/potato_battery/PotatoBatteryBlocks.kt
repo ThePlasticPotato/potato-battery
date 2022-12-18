@@ -5,7 +5,6 @@ import me.crackhead.potato_battery.block.machine.BatteryBlock
 import me.crackhead.potato_battery.registry.DeferredRegister
 import net.minecraft.core.Registry
 import net.minecraft.world.item.BlockItem
-import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 
@@ -22,7 +21,7 @@ object PotatoBatteryBlocks {
 
     fun registerItems(items: DeferredRegister<Item>) {
         BLOCKS.iterator().forEach {
-            items.register(it.name) { BlockItem(it.get(), Item.Properties().tab(CreativeModeTab.TAB_MISC)) }
+            items.register(it.name) { BlockItem(it.get(), Item.Properties().tab(PotatoBatteryItems.TAB)) }
         }
     }
 

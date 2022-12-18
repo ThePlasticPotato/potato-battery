@@ -1,5 +1,6 @@
 package me.crackhead.potato_battery
 
+import com.mojang.datafixers.types.Type
 import me.crackhead.potato_battery.blockentity.machine.BatteryBlockEntity
 import me.crackhead.potato_battery.registry.DeferredRegister
 import me.crackhead.potato_battery.registry.RegistrySupplier
@@ -31,7 +32,7 @@ object PotatoBatteryBlockEntities {
     private infix fun <T : BlockEntity> Block.withBE(blockEntity: (BlockPos, BlockState) -> T) = Pair(this, blockEntity)
     private infix fun <T : BlockEntity> Pair<Set<RegistrySupplier<out Block>>, (BlockPos, BlockState) -> T>.byName(name: String): RegistrySupplier<BlockEntityType<T>> =
         BLOCKENTITIES.register(name) {
-            val type = Util.fetchChoiceType(References.BLOCK_ENTITY, name)
-            BlockEntityType.Builder.of(this.second, *this.first.map { it.get() }.toTypedArray()).build(type!!)
+            val type: Type<*>? = Util.fetchChoiceType(References.BLOCK_ENTITY, name)
+            BlockEntityType.Builder.of(this.second, *this.first.map { it.get() }.toTypedArray()).build(type)
         }
 }

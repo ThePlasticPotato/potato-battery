@@ -18,7 +18,7 @@ object PotatoBatteryMod {
     @JvmStatic
     fun init() {
         PotatoBatteryBlocks.register()
-        //PotatoBatteryItems.register()
+        PotatoBatteryItems.register()
         PotatoBatteryBlockEntities.register()
     }
 

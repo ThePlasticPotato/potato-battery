@@ -3,8 +3,8 @@ package me.crackhead.potato_battery.render
 import com.mojang.blaze3d.vertex.PoseStack
 import me.crackhead.potato_battery.render.outliner.AABBOutline
 import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.core.BlockPos
-import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec3
 
@@ -12,21 +12,17 @@ open class AABBSocketRender(bb: AABB, val pos: BlockPos) : AABBOutline(bb) {
     var passiveColor = 0
     var highlightColor = 0
     var isPassive = false
-    var blockState: BlockState? = null
+    var blockState = Minecraft.getInstance().level!!.getBlockState(pos)
 
     // Label
     var fontScale = -1 / 64f
     var labelOffset: Vec3 = Vec3.ZERO
 
-    init {
-        blockState = Minecraft.getInstance().level?.getBlockState(pos)
-    }
-
     open fun transform(ps: PoseStack) {
 
     }
 
-    override fun render(ps: PoseStack, buffer: SuperRenderTypeBuffer, pt: Float) {
+    override fun render(ps: PoseStack, buffer: MultiBufferSource, pt: Float) {
         ps.pushPose()
         ps.translate(pos!!.x.toDouble(), pos!!.y.toDouble(), pos!!.z.toDouble())
         transform(ps)

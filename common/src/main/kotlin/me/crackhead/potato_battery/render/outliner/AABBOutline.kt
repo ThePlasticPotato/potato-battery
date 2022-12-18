@@ -1,8 +1,8 @@
 package me.crackhead.potato_battery.render.outliner
 
 import com.mojang.blaze3d.vertex.PoseStack
-import me.crackhead.potato_battery.render.SuperRenderTypeBuffer
 import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.RenderType
 import net.minecraft.core.Direction
 import net.minecraft.world.phys.AABB
@@ -11,11 +11,11 @@ import net.minecraft.world.phys.Vec3
 
 open class AABBOutline(val bb: AABB) : Outline() {
 
-    override fun render(ms: PoseStack, buffer: SuperRenderTypeBuffer, pt: Float) {
+    override fun render(ms: PoseStack, buffer: MultiBufferSource, pt: Float) {
         renderBB(ms, buffer, bb)
     }
 
-    fun renderBB(ms: PoseStack?, buffer: SuperRenderTypeBuffer?, bb: AABB?) {
+    fun renderBB(ms: PoseStack, buffer: MultiBufferSource, bb: AABB) {
         var bb = bb
         val projectedView = Minecraft.getInstance().gameRenderer.mainCamera
             .position
@@ -55,16 +55,16 @@ open class AABBOutline(val bb: AABB) : Outline() {
     }
 
     protected fun renderFace(
-        ms: PoseStack?, buffer: SuperRenderTypeBuffer?, direction: Direction, p1: Vec3?, p2: Vec3,
-        p3: Vec3?, p4: Vec3, noCull: Boolean
+        ms: PoseStack, buffer: MultiBufferSource, direction: Direction,
+        p1: Vec3, p2: Vec3, p3: Vec3, p4: Vec3,
+        noCull: Boolean
     ) {
         if (!params.faceTexture.isPresent) return
         val faceTexture = params.faceTexture.get()
             .location
         val alphaBefore = params.alpha
         params.alpha = if (direction == params.highlightedFace && params.hightlightedFaceTexture.isPresent) 1f else 0.5f
-        val translucentType: RenderType = RenderType.translucent()//RenderTypes.getOutlineTranslucent(faceTexture, !noCull)
-        val builder = buffer!!.getLateBuffer(translucentType)
+        val builder = buffer.getBuffer( RenderType.translucent()) //RenderTypes.getOutlineTranslucent(faceTexture, !noCull)
         val axis = direction.axis
         val uDiff = p2.subtract(p1)
         val vDiff = p4.subtract(p1)
