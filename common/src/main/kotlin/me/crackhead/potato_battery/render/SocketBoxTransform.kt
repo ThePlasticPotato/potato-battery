@@ -24,7 +24,7 @@ abstract class SocketBoxTransform {
         return localHit.distanceTo(offset) < scale / 2
     }
 
-    fun transform(state: BlockState?, ms: PoseStack) {
+    fun transform(state: BlockState, ms: PoseStack) {
         val position = getLocalOffset(state) ?: return
         ms.translate(position.x, position.y, position.z)
         rotate(state, ms)
