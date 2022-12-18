@@ -1,19 +1,13 @@
 package me.crackhead.potato_battery
 
-import net.minecraft.core.Registry
-import net.minecraft.world.item.BlockItem
-import net.minecraft.world.item.Item
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.Blocks
-import net.minecraft.world.level.block.FireBlock
-import net.minecraft.world.level.block.SoundType
-import net.minecraft.world.level.block.state.BlockBehaviour
-import net.minecraft.world.level.material.Material
-import net.minecraft.world.level.material.MaterialColor
 import me.crackhead.potato_battery.block.*
 import me.crackhead.potato_battery.block.machine.BatteryBlock
 import me.crackhead.potato_battery.registry.DeferredRegister
-import me.crackhead.potato_battery.registry.RegistryEvents
+import net.minecraft.core.Registry
+import net.minecraft.world.item.BlockItem
+import net.minecraft.world.item.CreativeModeTab
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.block.Block
 
 @Suppress("unused")
 object PotatoBatteryBlocks {
@@ -23,11 +17,12 @@ object PotatoBatteryBlocks {
 
 
     fun register() {
-        BLOCKS.register()
+        BLOCKS.applyAll()
     }
+
     fun registerItems(items: DeferredRegister<Item>) {
         BLOCKS.iterator().forEach {
-            items.register(it.id) { BlockItem(it.get(), Item.Properties().tab(PotatoBatteryItems.TAB)) }
+            items.register(it.name) { BlockItem(it.get(), Item.Properties().tab(CreativeModeTab.TAB_MISC)) }
         }
     }
 

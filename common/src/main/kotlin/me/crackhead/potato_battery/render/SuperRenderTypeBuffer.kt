@@ -24,7 +24,7 @@ class SuperRenderTypeBuffer : MultiBufferSource {
         lateBuffer = SuperRenderTypeBufferPhase()
     }
 
-    fun getEarlyBuffer(type: RenderType?): VertexConsumer {
+    fun getEarlyBuffer(type: RenderType): VertexConsumer {
         return earlyBuffer.bufferSource.getBuffer(type)
     }
 
@@ -32,7 +32,7 @@ class SuperRenderTypeBuffer : MultiBufferSource {
         return defaultBuffer.bufferSource.getBuffer(type)
     }
 
-    fun getLateBuffer(type: RenderType?): VertexConsumer {
+    fun getLateBuffer(type: RenderType): VertexConsumer {
         return lateBuffer.bufferSource.getBuffer(type)
     }
 
@@ -42,7 +42,7 @@ class SuperRenderTypeBuffer : MultiBufferSource {
         lateBuffer.bufferSource.endBatch()
     }
 
-    fun draw(type: RenderType?) {
+    fun draw(type: RenderType) {
         earlyBuffer.bufferSource.endBatch(type)
         defaultBuffer.bufferSource.endBatch(type)
         lateBuffer.bufferSource.endBatch(type)
@@ -51,9 +51,9 @@ class SuperRenderTypeBuffer : MultiBufferSource {
     private class SuperRenderTypeBufferPhase {
         // Visible clones from RenderBuffers
         private val fixedBufferPack = ChunkBufferBuilderPack()
-        private val fixedBuffers: SortedMap<RenderType?, BufferBuilder?> = Util.make(
+        private val fixedBuffers: SortedMap<RenderType, BufferBuilder> = Util.make(
             Object2ObjectLinkedOpenHashMap()
-        ) { map: Object2ObjectLinkedOpenHashMap<RenderType?, BufferBuilder?> ->
+        ) { map ->
             map[Sheets.solidBlockSheet()] = fixedBufferPack.builder(RenderType.solid())
             map[Sheets.cutoutBlockSheet()] = fixedBufferPack.builder(RenderType.cutout())
             map[Sheets.bannerSheet()] = fixedBufferPack.builder(RenderType.cutoutMipped())

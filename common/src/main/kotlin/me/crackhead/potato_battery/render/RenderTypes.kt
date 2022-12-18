@@ -1,19 +1,8 @@
 package me.crackhead.potato_battery.render
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat
-import com.mojang.blaze3d.vertex.VertexFormat
-import me.crackhead.potato_battery.PotatoBatteryMod
-import me.crackhead.potato_battery.render.RenderTypes.name1
-import me.crackhead.potato_battery.render.RenderTypes.runnable1
-import me.crackhead.potato_battery.render.RenderTypes.runnable2
-import net.minecraft.client.renderer.RenderStateShard
-import net.minecraft.client.renderer.RenderType
-import net.minecraft.resources.ResourceLocation
-import net.minecraft.world.inventory.InventoryMenu
 
-
-object RenderTypes : RenderStateShard(name1, runnable1, runnable2) {
-
+object RenderTypes /*:RenderStateShard(name1, runnable1, runnable2)*/ {
+    /*
     val name1: String
         get() {
             return name1
@@ -26,6 +15,8 @@ object RenderTypes : RenderStateShard(name1, runnable1, runnable2) {
         get() {
             return runnable2
         }
+
+
 //    val name1: String = "RenderTypes"
 //    private val setupState: Runnable? = null
 //    private val clearState: Runnable? = null
@@ -143,6 +134,6 @@ object RenderTypes : RenderStateShard(name1, runnable1, runnable2) {
     private fun createLayerName(name: String): String {
         return PotatoBatteryMod.MOD_ID + ":" + name
     }
-
+*/
 
 }

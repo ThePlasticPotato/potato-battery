@@ -3,20 +3,19 @@ package me.crackhead.potato_battery.render.outliner
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.math.Matrix3f
-import me.crackhead.potato_battery.render.RenderTypes
+import me.crackhead.potato_battery.render.SpecialTextures
+import me.crackhead.potato_battery.render.SuperRenderTypeBuffer
 import me.crackhead.potato_battery.render.util.AngleHelper
 import me.crackhead.potato_battery.render.util.Color
+import me.crackhead.potato_battery.render.util.TransformStack
 import me.crackhead.potato_battery.render.util.VecHelper
 import net.minecraft.client.renderer.LightTexture
+import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.core.Direction
 import net.minecraft.util.Mth
 import net.minecraft.world.phys.Vec3
 import java.util.*
-import me.crackhead.potato_battery.render.SpecialTextures
-import me.crackhead.potato_battery.render.SuperRenderTypeBuffer
-import me.crackhead.potato_battery.render.util.TransformStack
-import net.minecraft.client.renderer.RenderType
 
 
 abstract class Outline {
@@ -52,7 +51,7 @@ abstract class Outline {
         var end = end
         val lineWidth = params.getLineWidth()
         if (lineWidth == 0f) return
-        val builder: VertexConsumer = buffer.getBuffer(RenderTypes.outlineSolid) //replace with custom render type later
+        val builder: VertexConsumer = buffer.getBuffer(RenderType.solid()) //replace with custom render type later
         var diff = end.subtract(start)
         if (diff.x + diff.y + diff.z < 0) {
             val temp = start

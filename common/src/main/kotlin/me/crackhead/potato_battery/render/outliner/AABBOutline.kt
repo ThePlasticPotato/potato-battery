@@ -1,8 +1,6 @@
 package me.crackhead.potato_battery.render.outliner
 
 import com.mojang.blaze3d.vertex.PoseStack
-import me.crackhead.potato_battery.render.RenderTypes
-
 import me.crackhead.potato_battery.render.SuperRenderTypeBuffer
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.RenderType
@@ -11,12 +9,7 @@ import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec3
 
 
-open class AABBOutline(bb: AABB?) : Outline() {
-    protected var bb: AABB? = null
-
-    init {
-        setBounds(bb)
-    }
+open class AABBOutline(val bb: AABB) : Outline() {
 
     override fun render(ms: PoseStack, buffer: SuperRenderTypeBuffer, pt: Float) {
         renderBB(ms, buffer, bb)
@@ -70,7 +63,7 @@ open class AABBOutline(bb: AABB?) : Outline() {
             .location
         val alphaBefore = params.alpha
         params.alpha = if (direction == params.highlightedFace && params.hightlightedFaceTexture.isPresent) 1f else 0.5f
-        val translucentType: RenderType = RenderTypes.getOutlineTranslucent(faceTexture, !noCull)
+        val translucentType: RenderType = RenderType.translucent()//RenderTypes.getOutlineTranslucent(faceTexture, !noCull)
         val builder = buffer!!.getLateBuffer(translucentType)
         val axis = direction.axis
         val uDiff = p2.subtract(p1)
@@ -79,9 +72,5 @@ open class AABBOutline(bb: AABB?) : Outline() {
         val maxV = Math.abs(if (axis === Direction.Axis.Y) vDiff.z else vDiff.y).toFloat()
         putQuadUV(ms!!, builder, p1!!, p2, p3!!, p4, 0f, 0f, maxU, maxV, Direction.UP)
         params.alpha = alphaBefore
-    }
-
-    fun setBounds(bb: AABB?) {
-        this.bb = bb
     }
 }

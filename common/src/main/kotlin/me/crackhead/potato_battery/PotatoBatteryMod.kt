@@ -17,13 +17,9 @@ object PotatoBatteryMod {
 
     @JvmStatic
     fun init() {
-//        TakeoffBlocks.register()
-//        TakeoffBlockEntities.register()
-//        TakeoffItems.register()
-//        TakeoffScreens.register()
-//        TakeoffEntities.register()
-//        TakeoffWeights.register()
-//        VSConfigClass.registerConfig("vs_takeoff", TakeoffConfig::class.java)
+        PotatoBatteryBlocks.register()
+        //PotatoBatteryItems.register()
+        PotatoBatteryBlockEntities.register()
     }
 
     @JvmStatic
@@ -50,7 +46,5 @@ object PotatoBatteryMod {
         }
     }
 
-    fun asResource(path: String?): ResourceLocation? {
-        return ResourceLocation(MOD_ID, path)
-    }
+    val String.resource: ResourceLocation get() = ResourceLocation(MOD_ID, this)
 }
