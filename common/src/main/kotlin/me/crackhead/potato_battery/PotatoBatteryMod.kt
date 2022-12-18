@@ -12,7 +12,7 @@ import org.jgrapht.graph.SimpleGraph
 
 object PotatoBatteryMod {
     const val DEBUG = true
-    const val MOD_ID = "pb"
+    const val MOD_ID = "potato_battery"
     val graph = DefaultListenableGraph(SimpleGraph<PBVertex, DefaultEdge>(DefaultEdge::class.java))
 
     @JvmStatic

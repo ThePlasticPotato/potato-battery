@@ -1,9 +1,9 @@
 package me.crackhead.potato_battery.render.outliner
 
 import com.mojang.blaze3d.vertex.PoseStack
+import me.crackhead.potato_battery.render.RenderTypes
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.RenderType
 import net.minecraft.core.Direction
 import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec3
@@ -17,8 +17,7 @@ open class AABBOutline(val bb: AABB) : Outline() {
 
     fun renderBB(ms: PoseStack, buffer: MultiBufferSource, bb: AABB) {
         var bb = bb
-        val projectedView = Minecraft.getInstance().gameRenderer.mainCamera
-            .position
+        val projectedView = Minecraft.getInstance().gameRenderer.mainCamera.position
         var noCull = bb!!.contains(projectedView)
         bb = bb.inflate(if (noCull) -1 / 128.0 else 1 / 128.0)
         noCull = noCull or params.disableCull
@@ -59,18 +58,21 @@ open class AABBOutline(val bb: AABB) : Outline() {
         p1: Vec3, p2: Vec3, p3: Vec3, p4: Vec3,
         noCull: Boolean
     ) {
-        if (!params.faceTexture.isPresent) return
-        val faceTexture = params.faceTexture.get()
-            .location
+        if (params.faceTexture == null) return
+        val faceTexture = params.faceTexture!!.location
         val alphaBefore = params.alpha
-        params.alpha = if (direction == params.highlightedFace && params.hightlightedFaceTexture.isPresent) 1f else 0.5f
-        val builder = buffer.getBuffer( RenderType.translucent()) //RenderTypes.getOutlineTranslucent(faceTexture, !noCull)
+
+        params.alpha = if (direction == params.highlightedFace && params.hightlightedFaceTexture != null) 1f else 0.5f
+
+        val builder = buffer.getBuffer(RenderTypes.solidOutline) //RenderTypes.getOutlineTranslucent(faceTexture, !noCull)
+
         val axis = direction.axis
         val uDiff = p2.subtract(p1)
         val vDiff = p4.subtract(p1)
         val maxU = Math.abs(if (axis === Direction.Axis.X) uDiff.z else uDiff.x).toFloat()
         val maxV = Math.abs(if (axis === Direction.Axis.Y) vDiff.z else vDiff.y).toFloat()
-        putQuadUV(ms!!, builder, p1!!, p2, p3!!, p4, 0f, 0f, maxU, maxV, Direction.UP)
+
+        putQuadUV(ms, builder, p1, p2, p3, p4, 0f, 0f, maxU, maxV, Direction.UP)
         params.alpha = alphaBefore
     }
 }

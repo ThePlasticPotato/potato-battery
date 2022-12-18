@@ -21,7 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LevelRenderer.class)
 public class MixinLevelRenderer {
 
-
     @Shadow @Final private RenderBuffers renderBuffers;
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V", ordinal = 11), method = "renderLevel")
@@ -30,7 +29,13 @@ public class MixinLevelRenderer {
                         Camera camera, GameRenderer gameRenderer, LightTexture lightTexture,
                         Matrix4f projectionMatrix, CallbackInfo ci) {
 
+        poseStack.pushPose();
+
+        poseStack.translate(-camera.getPosition().x, -camera.getPosition().y, -camera.getPosition().z);
+
         new AABBSocketRender(AABB.ofSize(Vec3.ZERO, 1, 1, 1), new BlockPos(0, 0, 0))
                 .render(poseStack, this.renderBuffers.bufferSource(), partialTick);
+
+        poseStack.popPose();
     }
 }

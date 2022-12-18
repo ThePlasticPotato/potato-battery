@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "pb",
+  "id": "potato_battery",
   "version": "${version}",
   "name": "Potato Battery",
   "description": "An indepth electricity API for Minecraft. Modloader independent.",

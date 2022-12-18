@@ -1,7 +1,14 @@
 package me.crackhead.potato_battery.render
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat
+import com.mojang.blaze3d.vertex.VertexFormat
+import net.minecraft.client.renderer.RenderStateShard
+import net.minecraft.client.renderer.RenderType
 
-object RenderTypes /*:RenderStateShard(name1, runnable1, runnable2)*/ {
+
+object RenderTypes : RenderStateShard("bp_render",
+    {}, {}
+) {
     /*
     val name1: String
         get() {
@@ -27,11 +34,12 @@ object RenderTypes /*:RenderStateShard(name1, runnable1, runnable2)*/ {
 //
 //    override fun clearRenderState() {
 //        clearState?.run()
-//    }
+//    }*/
 
-    val outlineSolid: RenderType = RenderType.create(
-        createLayerName("outline_solid"), DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false,
-        false, RenderType.CompositeState.builder()
+    val solidOutline: RenderType = RenderType.create(
+        "outline_solid", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS,
+        256, false, false,
+        RenderType.CompositeState.builder()
             .setShaderState(RENDERTYPE_ENTITY_SOLID_SHADER)
             .setTextureState(TextureStateShard(SpecialTextures.BLANK.location, false, false))
             .setCullState(CULL)
@@ -39,6 +47,20 @@ object RenderTypes /*:RenderStateShard(name1, runnable1, runnable2)*/ {
             .setOverlayState(OVERLAY)
             .createCompositeState(false)
     )
+
+    val solidOutlineGlow: RenderType = RenderType.create(
+        "outline_solidglow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS,
+        256, true, false,
+        RenderType.CompositeState.builder()
+            .setShaderState(RENDERTYPE_GLINT_SHADER)
+            .setTextureState(TextureStateShard(SpecialTextures.BLANK.location, false, false))
+            .setCullState(CULL)
+            .setLightmapState(LIGHTMAP)
+            .setOverlayState(OVERLAY)
+            .createCompositeState(false)
+    )
+
+    /*
 
     fun getOutlineTranslucent(texture: ResourceLocation?, cull: Boolean): RenderType {
         return RenderType.create(

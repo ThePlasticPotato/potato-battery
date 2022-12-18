@@ -2,7 +2,7 @@ package me.crackhead.potato_battery.render.util
 
 import com.mojang.math.Quaternion
 import com.mojang.math.Vector3f
-import me.crackhead.potato_battery.mixin.GameRendererAccessor
+import me.crackhead.potato_battery.mixin.accessors.GameRendererAccessor
 import net.minecraft.client.Minecraft
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction

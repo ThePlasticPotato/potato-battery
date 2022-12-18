@@ -3,6 +3,7 @@ package me.crackhead.potato_battery.render.outliner
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.math.Matrix3f
+import me.crackhead.potato_battery.render.RenderTypes
 import me.crackhead.potato_battery.render.SpecialTextures
 import me.crackhead.potato_battery.render.util.AngleHelper
 import me.crackhead.potato_battery.render.util.Color
@@ -10,12 +11,10 @@ import me.crackhead.potato_battery.render.util.TransformStack
 import me.crackhead.potato_battery.render.util.VecHelper
 import net.minecraft.client.renderer.LightTexture
 import net.minecraft.client.renderer.MultiBufferSource
-import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.texture.OverlayTexture
 import net.minecraft.core.Direction
 import net.minecraft.util.Mth
 import net.minecraft.world.phys.Vec3
-import java.util.*
 
 
 abstract class Outline {
@@ -29,7 +28,6 @@ abstract class Outline {
     }
 
     abstract fun render(ms: PoseStack, buffer: MultiBufferSource, pt: Float)
-    open fun tick() {}
     fun renderCuboidLine(ms: PoseStack, buffer: MultiBufferSource, start: Vec3?, end: Vec3) {
         val diff = end.subtract(start)
         val hAngle: Float = AngleHelper.deg(Mth.atan2(diff.x, diff.z))
@@ -51,7 +49,8 @@ abstract class Outline {
         var end = end
         val lineWidth = params.getLineWidth()
         if (lineWidth == 0f) return
-        val builder: VertexConsumer = buffer.getBuffer(RenderType.solid()) //replace with custom render type later
+        val builder = buffer.getBuffer(RenderTypes.solidOutline)
+
         var diff = end.subtract(start)
         if (diff.x + diff.y + diff.z < 0) {
             val temp = start
@@ -161,8 +160,8 @@ abstract class Outline {
     }
 
     class OutlineParams {
-        var faceTexture: Optional<SpecialTextures>
-        var hightlightedFaceTexture: Optional<SpecialTextures>
+        var faceTexture: SpecialTextures?
+        var hightlightedFaceTexture: SpecialTextures?
         var highlightedFace: Direction? = null
             protected set
         protected var fadeLineWidth: Boolean
@@ -174,8 +173,8 @@ abstract class Outline {
         private var lineWidth: Float
 
         init {
-            hightlightedFaceTexture = Optional.empty<SpecialTextures>()
-            faceTexture = hightlightedFaceTexture
+            hightlightedFaceTexture = null
+            faceTexture = null
             alpha = 1f
             lineWidth = 1 / 32f
             fadeLineWidth = true
@@ -205,17 +204,13 @@ abstract class Outline {
         }
 
         fun withFaceTexture(texture: SpecialTextures?): OutlineParams {
-            faceTexture = Optional.ofNullable<SpecialTextures>(texture)
+            faceTexture = texture
             return this
         }
 
         fun clearTextures(): OutlineParams {
-            return withFaceTextures(null, null)
-        }
-
-        fun withFaceTextures(texture: SpecialTextures?, highlightTexture: SpecialTextures?): OutlineParams {
-            faceTexture = Optional.ofNullable<SpecialTextures>(texture)
-            hightlightedFaceTexture = Optional.ofNullable<SpecialTextures>(highlightTexture)
+            faceTexture = null
+            hightlightedFaceTexture = null
             return this
         }
 

@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3
 
 open class AABBSocketRender(bb: AABB, val pos: BlockPos) : AABBOutline(bb) {
     var passiveColor = 0
-    var highlightColor = 0
+    var highlightColor = 0xFFFFFF
     var isPassive = false
     var blockState = Minecraft.getInstance().level!!.getBlockState(pos)
 
@@ -18,13 +18,18 @@ open class AABBSocketRender(bb: AABB, val pos: BlockPos) : AABBOutline(bb) {
     var fontScale = -1 / 64f
     var labelOffset: Vec3 = Vec3.ZERO
 
+    init {
+        params.disableCull()
+        params.faceTexture = SpecialTextures.CHECKERED
+    }
+
     open fun transform(ps: PoseStack) {
 
     }
 
     override fun render(ps: PoseStack, buffer: MultiBufferSource, pt: Float) {
         ps.pushPose()
-        ps.translate(pos!!.x.toDouble(), pos!!.y.toDouble(), pos!!.z.toDouble())
+        ps.translate(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
         transform(ps)
         transformNormals = ps.last()
             .normal()
@@ -33,8 +38,6 @@ open class AABBSocketRender(bb: AABB, val pos: BlockPos) : AABBOutline(bb) {
         super.render(ps, buffer, pt)
         val fontScale = fontScale
         ps.scale(fontScale, fontScale, fontScale)
-        ps.pushPose()
-        ps.popPose()
         if (!isPassive) {
             ps.pushPose()
             ps.translate(17.5, -.5, 7.0)
