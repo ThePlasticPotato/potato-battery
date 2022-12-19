@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack
 import me.crackhead.potato_battery.render.util.AngleHelper.horizontalAngle
 import me.crackhead.potato_battery.render.util.AngleHelper.verticalAngle
 import me.crackhead.potato_battery.render.util.TransformStack
-import me.crackhead.potato_battery.render.util.VecHelper.rotateCentered
+import me.crackhead.potato_battery.util.VecHelper.rotateCentered
 import net.minecraft.core.Direction
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.properties.BlockStateProperties

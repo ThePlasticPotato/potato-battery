@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "potato_battery:block/battery"
+    }
+  }
+}

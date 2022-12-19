@@ -1,21 +1,23 @@
 package me.crackhead.potato_battery.api.wire
 
 import net.minecraft.core.BlockPos
-import net.minecraft.world.item.DyeColor
-import net.minecraft.world.phys.Vec3
+import net.minecraft.world.phys.AABB
 
 
-class DefaultSocket(override val pos: Vec3, override val blockPos: BlockPos) : Socket {
+class DefaultSocket(override val blockPos: BlockPos, override val aabb: AABB) : Socket {
 
-    private var _connectedSocket: DefaultSocket? = null
-    override val connectedSocket: DefaultSocket? get() = _connectedSocket
+    private var _connectedSocket: Socket? = null
+    override val connectedSocket: Socket? get() = _connectedSocket
 
-
-    override fun connect(other: DefaultSocket) {
-        this._connectedSocket = other
+    override fun connect(other: Socket) {
+        _connectedSocket = other
     }
 
     override fun disconnect() {
-        this._connectedSocket = null
+        _connectedSocket = null
+    }
+
+    override fun hashCode(): Int {
+        return blockPos.hashCode()
     }
 }

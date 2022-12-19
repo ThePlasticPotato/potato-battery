@@ -1,19 +1,15 @@
 package me.crackhead.potato_battery.api.wire
 
 import net.minecraft.core.BlockPos
-import net.minecraft.world.item.DyeColor
-import net.minecraft.world.phys.Vec3
+import net.minecraft.world.phys.AABB
 
 interface Socket {
 
-    val connectedSocket: DefaultSocket?
+    val connectedSocket: Socket?
 
-    /**
-     * The position of the socket in world coordinates
-     */
-    val pos: Vec3
     val blockPos: BlockPos // The block position of the socket
+    val aabb: AABB // in world coordinates
 
-    fun connect(other: DefaultSocket)
+    fun connect(other: Socket)
     fun disconnect()
 }

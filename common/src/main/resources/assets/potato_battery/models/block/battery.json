@@ -1,10 +1,9 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "battery",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "battery",
-		"particle": "battery"
+		"0": "potato_battery:block/battery",
+		"particle": "potato_battery:block/battery"
 	},
 	"elements": [
 		{

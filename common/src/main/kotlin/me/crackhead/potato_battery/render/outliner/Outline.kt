@@ -8,7 +8,7 @@ import me.crackhead.potato_battery.render.SpecialTextures
 import me.crackhead.potato_battery.render.util.AngleHelper
 import me.crackhead.potato_battery.render.util.Color
 import me.crackhead.potato_battery.render.util.TransformStack
-import me.crackhead.potato_battery.render.util.VecHelper
+import me.crackhead.potato_battery.util.VecHelper
 import net.minecraft.client.renderer.LightTexture
 import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.texture.OverlayTexture
@@ -44,9 +44,9 @@ abstract class Outline {
         ms.popPose()
     }
 
-    fun renderAACuboidLine(ms: PoseStack, buffer: MultiBufferSource, start: Vec3, end: Vec3) {
-        var start = start
-        var end = end
+    fun renderAACuboidLine(ps: PoseStack, buffer: MultiBufferSource, startI: Vec3, endI: Vec3) {
+        var start = startI
+        var end = endI
         val lineWidth = params.getLineWidth()
         if (lineWidth == 0f) return
         val builder = buffer.getBuffer(RenderTypes.solidOutline)
@@ -79,28 +79,28 @@ abstract class Outline {
         val b4 = plane.add(end)
         if (params.disableNormals) {
             face = Direction.UP
-            putQuad(ms, builder, b4, b3, b2, b1, face)
-            putQuad(ms, builder, a1, a2, a3, a4, face)
-            putQuad(ms, builder, a1, b1, b2, a2, face)
-            putQuad(ms, builder, a2, b2, b3, a3, face)
-            putQuad(ms, builder, a3, b3, b4, a4, face)
-            putQuad(ms, builder, a4, b4, b1, a1, face)
+            putQuad(ps, builder, b4, b3, b2, b1, face)
+            putQuad(ps, builder, a1, a2, a3, a4, face)
+            putQuad(ps, builder, a1, b1, b2, a2, face)
+            putQuad(ps, builder, a2, b2, b3, a3, face)
+            putQuad(ps, builder, a3, b3, b4, a4, face)
+            putQuad(ps, builder, a4, b4, b1, a1, face)
             return
         }
-        putQuad(ms, builder, b4, b3, b2, b1, face)
-        putQuad(ms, builder, a1, a2, a3, a4, face.opposite)
+        putQuad(ps, builder, b4, b3, b2, b1, face)
+        putQuad(ps, builder, a1, a2, a3, a4, face.opposite)
         var vec = a1.subtract(a4)
         face = Direction.getNearest(vec.x, vec.y, vec.z)
-        putQuad(ms, builder, a1, b1, b2, a2, face)
+        putQuad(ps, builder, a1, b1, b2, a2, face)
         vec = VecHelper.rotate(vec, -90.0, axis)
         face = Direction.getNearest(vec.x, vec.y, vec.z)
-        putQuad(ms, builder, a2, b2, b3, a3, face)
+        putQuad(ps, builder, a2, b2, b3, a3, face)
         vec = VecHelper.rotate(vec, -90.0, axis)
         face = Direction.getNearest(vec.x, vec.y, vec.z)
-        putQuad(ms, builder, a3, b3, b4, a4, face)
+        putQuad(ps, builder, a3, b3, b4, a4, face)
         vec = VecHelper.rotate(vec, -90.0, axis)
         face = Direction.getNearest(vec.x, vec.y, vec.z)
-        putQuad(ms, builder, a4, b4, b1, a1, face)
+        putQuad(ps, builder, a4, b4, b1, a1, face)
     }
 
     fun putQuad(

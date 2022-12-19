@@ -15,10 +15,10 @@ open class AABBOutline(val bb: AABB) : Outline() {
         renderBB(ms, buffer, bb)
     }
 
-    fun renderBB(ms: PoseStack, buffer: MultiBufferSource, bb: AABB) {
+    fun renderBB(ps: PoseStack, buffer: MultiBufferSource, bb: AABB) {
         var bb = bb
         val projectedView = Minecraft.getInstance().gameRenderer.mainCamera.position
-        var noCull = bb!!.contains(projectedView)
+        var noCull = bb.contains(projectedView)
         bb = bb.inflate(if (noCull) -1 / 128.0 else 1 / 128.0)
         noCull = noCull or params.disableCull
         val xyz = Vec3(bb.minX, bb.minY, bb.minZ)
@@ -30,27 +30,27 @@ open class AABBOutline(val bb: AABB) : Outline() {
         val xYZ = Vec3(bb.minX, bb.maxY, bb.maxZ)
         val XYZ = Vec3(bb.maxX, bb.maxY, bb.maxZ)
         var start = xyz
-        renderAACuboidLine(ms!!, buffer!!, start, Xyz)
-        renderAACuboidLine(ms, buffer, start, xYz)
-        renderAACuboidLine(ms, buffer, start, xyZ)
+        renderAACuboidLine(ps, buffer, start, Xyz)
+        renderAACuboidLine(ps, buffer, start, xYz)
+        renderAACuboidLine(ps, buffer, start, xyZ)
         start = XyZ
-        renderAACuboidLine(ms, buffer, start, xyZ)
-        renderAACuboidLine(ms, buffer, start, XYZ)
-        renderAACuboidLine(ms, buffer, start, Xyz)
+        renderAACuboidLine(ps, buffer, start, xyZ)
+        renderAACuboidLine(ps, buffer, start, XYZ)
+        renderAACuboidLine(ps, buffer, start, Xyz)
         start = XYz
-        renderAACuboidLine(ms, buffer, start, xYz)
-        renderAACuboidLine(ms, buffer, start, Xyz)
-        renderAACuboidLine(ms, buffer, start, XYZ)
+        renderAACuboidLine(ps, buffer, start, xYz)
+        renderAACuboidLine(ps, buffer, start, Xyz)
+        renderAACuboidLine(ps, buffer, start, XYZ)
         start = xYZ
-        renderAACuboidLine(ms, buffer, start, XYZ)
-        renderAACuboidLine(ms, buffer, start, xyZ)
-        renderAACuboidLine(ms, buffer, start, xYz)
-        renderFace(ms, buffer, Direction.NORTH, xYz, XYz, Xyz, xyz, noCull)
-        renderFace(ms, buffer, Direction.SOUTH, XYZ, xYZ, xyZ, XyZ, noCull)
-        renderFace(ms, buffer, Direction.EAST, XYz, XYZ, XyZ, Xyz, noCull)
-        renderFace(ms, buffer, Direction.WEST, xYZ, xYz, xyz, xyZ, noCull)
-        renderFace(ms, buffer, Direction.UP, xYZ, XYZ, XYz, xYz, noCull)
-        renderFace(ms, buffer, Direction.DOWN, xyz, Xyz, XyZ, xyZ, noCull)
+        renderAACuboidLine(ps, buffer, start, XYZ)
+        renderAACuboidLine(ps, buffer, start, xyZ)
+        renderAACuboidLine(ps, buffer, start, xYz)
+        renderFace(ps, buffer, Direction.NORTH, xYz, XYz, Xyz, xyz, noCull)
+        renderFace(ps, buffer, Direction.SOUTH, XYZ, xYZ, xyZ, XyZ, noCull)
+        renderFace(ps, buffer, Direction.EAST, XYz, XYZ, XyZ, Xyz, noCull)
+        renderFace(ps, buffer, Direction.WEST, xYZ, xYz, xyz, xyZ, noCull)
+        renderFace(ps, buffer, Direction.UP, xYZ, XYZ, XYz, xYz, noCull)
+        renderFace(ps, buffer, Direction.DOWN, xyz, Xyz, XyZ, xyZ, noCull)
     }
 
     protected fun renderFace(

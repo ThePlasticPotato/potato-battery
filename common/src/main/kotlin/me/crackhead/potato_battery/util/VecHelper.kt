@@ -1,4 +1,4 @@
-package me.crackhead.potato_battery.render.util
+package me.crackhead.potato_battery.util
 
 import com.mojang.math.Quaternion
 import com.mojang.math.Vector3f
