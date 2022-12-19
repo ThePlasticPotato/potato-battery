@@ -3,6 +3,8 @@ package me.crackhead.potato_battery.mixin.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import me.crackhead.potato_battery.api.SocketsBlockEntity;
+import me.crackhead.potato_battery.api.mixin.SocketHitProvider;
+import me.crackhead.potato_battery.api.wire.Socket;
 import me.crackhead.potato_battery.render.AABBSocketRender;
 import me.crackhead.potato_battery.render.SocketRenderer;
 import net.minecraft.client.Camera;
@@ -47,6 +49,17 @@ public class MixinLevelRenderer {
             BlockEntity be = this.level.getBlockEntity(bResult.getBlockPos());
 
             if (be instanceof SocketsBlockEntity) {
+                // Calculate the socket hit
+                Socket hit = null;
+                for (Socket socket : ((SocketsBlockEntity) be).getSockets()) {
+                    if (socket.getAabb().move(bResult.getBlockPos()).contains(bResult.getLocation())) {
+                        hit = socket;
+                        break;
+                    }
+                }
+
+                ((SocketHitProvider.Container) this.minecraft).setHitResultSocket(hit);
+
                 poseStack.pushPose();
 
                 SocketRenderer.INSTANCE.render((SocketsBlockEntity) be, poseStack, bResult.getBlockPos(),

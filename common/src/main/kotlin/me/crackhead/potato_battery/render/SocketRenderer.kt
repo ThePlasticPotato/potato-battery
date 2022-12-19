@@ -3,6 +3,7 @@ package me.crackhead.potato_battery.render
 import com.google.common.cache.CacheBuilder
 import com.mojang.blaze3d.vertex.PoseStack
 import me.crackhead.potato_battery.api.SocketsBlockEntity
+import me.crackhead.potato_battery.api.mixin.SocketHitProvider
 import me.crackhead.potato_battery.api.wire.Socket
 import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.core.BlockPos
@@ -11,6 +12,9 @@ object SocketRenderer {
     private val sockets = CacheBuilder.newBuilder()
         .maximumSize(16)
         .build<Socket, AABBSocketRender>()
+
+    fun isHighlighted(socket: AABBSocketRender): Boolean =
+        SocketHitProvider.getHit()?.let { sockets.getIfPresent(it) == socket } ?: false
 
     fun render(
         be: SocketsBlockEntity,

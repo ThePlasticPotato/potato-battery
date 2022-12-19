@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "MixinMain",
+    "MixinMinecraft",
     "render.MixinDebugRenderer",
     "render.MixinLevelRenderer"
   ],

@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3
 open class AABBSocketRender(bb: AABB) : AABBOutline(bb) {
     var passiveColor = 0
     var highlightColor = 0xFFFFFF
-    var isPassive = false
+    val isPassive get() = !SocketRenderer.isHighlighted(this)
 
     // Label
     var fontScale = -1 / 64f
